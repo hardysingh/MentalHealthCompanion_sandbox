@@ -1,0 +1,11 @@
+def chatbot():
+    k = input()
+    if k in ["Hi", "Hello", "What's up", "Howdy", "Hey"]:
+        print("Hi, how are you")
+    elif k in ["Bye", "Goodbye", "See you later"]:
+        print( "Bye")
+    else:
+        print("Huh?")
+    chatbot()
+
+chatbot()
