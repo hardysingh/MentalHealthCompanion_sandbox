@@ -1,0 +1,14 @@
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
+sent = input("How are you today? ")
+stemmer = PorterStemmer()
+clean = []
+stop_words = stopwords.words('english')
+for token in word_tokenize(sent):
+    if (token not in stop_words):
+        clean.append(stemmer.stem(token))
+print(clean)
+
+print(max(set(clean), key = clean.count))
