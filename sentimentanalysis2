@@ -3,10 +3,10 @@ file = open("sentiment.csv", "r")
 import nltk
 reader = csv.reader(file)
 name = input("Name: ")
-time = input("Time: ")
+date = input("Date: ")
 words = []
 for row in reader:
-    if row[2] == time and row[0] == name:
+    if row[1] == date and row[0] == name:
         words.append(nltk.word_tokenize(row[4])
 fd = nltk.FreqDist(words)
 print(fd.most_common(3))
