@@ -1,13 +1,31 @@
 import csv
+import matplotlib.pyplot as plt
 file = open("sentiment.csv", "r")
 import nltk
 reader = csv.reader(file)
 name = input("Name: ")
 date = input("Date: ")
 words = []
+x = []
+y = []
+i = 1
+dict = {
+    'Terrible' : 1,
+    'Bad' : 2,
+    'Not that well' : 3,
+    'Good' : 4,
+    'Great' : 5 }
 for row in reader:
     if row[1] == date and row[0] == name:
         words.append(nltk.word_tokenize(row[4])
+    if row[0] == name:
+        x.append(i)
+        i+=1
+        y.append(dict[row[3]])
 fd = nltk.FreqDist(words)
 print(fd.most_common(3))
+plt.plot(x, y, color='green', linestyle='dashed', linewidth = 3,
+         marker='o', markerfacecolor='blue', markersize=12)
+
+plt.show()
 file.close()
