@@ -2,6 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 file = open("sentiment.csv", "r")
 import nltk
+stopwords = nltk.corpus.stopwords.words('english')
 reader = csv.reader(file)
 name = input("Name: ")
 date = input("Date: ")
@@ -17,7 +18,10 @@ dict = {
     'Great' : 5 }
 for row in reader:
     if row[1] == date and row[0] == name:
-        words.append(nltk.word_tokenize(row[4])
+        words2 = nltk.word_tokenize(row[4])
+        for word in words2:
+            if word not in stopwords:
+                words.append(word)
     if row[0] == name:
         x.append(i)
         i+=1
