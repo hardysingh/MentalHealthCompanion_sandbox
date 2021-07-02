@@ -5,6 +5,7 @@ file = open("sentiment.csv", "r")
 import nltk
 stopwords = nltk.corpus.stopwords.words('english')
 reader = csv.reader(file)
+import statistics
 #inputting name and date
 name = input("Name: ")
 date = input("Date: ")
@@ -12,6 +13,7 @@ words = []
 x = []
 y = []
 i = 1
+
 #making dict to be able to plot
 dict = {
     'Terrible' : 1,
@@ -31,6 +33,11 @@ for row in reader:
         x.append(i)
         i+=1
         y.append(dict[row[3]])
+fd = nltk.FreqDist(words)
+print("Most commonly used words on", date)
+print(fd.most_common(3))
+file.close()
+
 #checking positive or negative mood
 pos = 0
 neg = 0
@@ -55,9 +62,47 @@ for i in y:
             max = s
 print (max, 'is the longest stretch of a negative mood for', name)
 
+#words most associated with positive/negative moods
+file = open("sentiment.csv", "r")
+reader = csv.reader(file)
+poswords = []
+negwords = []
+for row in reader:
+    if row[0] == name:
+        if (row[3] == 'Great' or row[3] == 'Good'):
+            temp = nltk.word_tokenize(row[4])
+            for word in temp:
+                if word not in stopwords:
+                    poswords.append(word)
+        if (row[3] == 'Bad' or row[3] == 'Terrible'):
+            temp = nltk.word_tokenize(row[4])
+            for word in temp:
+                if word not in stopwords:
+                    negwords.append(word)
+fdpos = nltk.FreqDist(poswords)
+print('Most positive words ', name, 'used:')
+print(fdpos.most_common(3))
+fdneg = nltk.FreqDist(negwords)
+print('Most negative words ', name, 'used:')
+print(fdneg.most_common(3))
+file.close()
+
+#printing avg length of journal entry for good and bad moods
+file = open("sentiment.csv", "r")
+reader = csv.reader(file)
+lenpos = []
+lenneg = []
+for row in reader:
+    if (row[3] == 'Great' or row[3] == 'Good'):
+        lenpos.append(len(nltk.word_tokenize(row[4])))
+    if (row[3] == 'Bad' or row[3] == 'Terrible'):
+        lenneg.append(len(nltk.word_tokenize(row[4])))
+print('Average journal entry length when', name, 'is in a good mood:')
+print(statistics.mean(lenpos))
+print('Average journal entry length when', name, 'is in a bad mood:')
+print(statistics.mean(lenneg))   
+
 #printing frequency distribution and plotting
-fd = nltk.FreqDist(words)
-print(fd.most_common(3))
 plt.plot(x, y, color='green', linestyle='dashed', linewidth = 3,
          marker='o', markerfacecolor='blue', markersize=12)
 
