@@ -1,0 +1,39 @@
+import csv
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+analyser = SentimentIntensityAnalyzer()
+i=0
+sashacomp = satvikacomp = sashaneg = satvikaneg = sashapos = satvikapos = 0
+file = open("whatsappdata.csv", "r")
+reader = csv.reader(file)
+for row in reader:
+    if i!=1:
+        print(row[0])
+        snt = analyser.polarity_scores(row[1])
+        print("{:-<40} {}".format(row[0], str(snt)))
+        compound = snt['compound']
+        negative = snt['neg']
+        positive = snt['pos']
+        if (row[0] == 'Sasha'):
+            sashacomp += compound
+            sashapos += positive
+            sashaneg += negative
+        else:
+            satvikacomp += compound
+            satvikapos += positive
+            satvikaneg += negative
+        i+=1
+    else:
+        i+=1
+i = i-1
+print(i)
+print("Sasha's average positive: ", sashapos/i)
+print("Satvika's average positive: ", satvikapos/i)
+print("Sasha's average negative: ", sashaneg/i)
+print("Satvika's average negative: ", satvikaneg/i)
+print("Sasha's average compound: ", sashacomp/i)
+print("Satvika's averagecompound: ", satvikacomp/i)
+if (satvikacomp>sashacomp):
+    print('Satvika is more positive')
+else:
+    print('Sasha is more positive')
+file.close()
