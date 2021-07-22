@@ -1,0 +1,40 @@
+import csv
+file = open("yelpdatanewer.csv")
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+analyser = SentimentIntensityAnalyzer()
+reader = csv.reader(file)
+i = 0
+s = 0
+for row in reader:
+    if i !=0:
+        snt = analyser.polarity_scores(row[1])
+        print("{:-<40} {}".format(i, str(snt)))
+        if int(row[0])>3:
+            realoutput = "Positive"
+            print("Real positive")
+        elif int(row[0])<3:
+            realoutput = "Negative"
+            print("Real negative")
+        else:
+            realoutput = "Neutral"
+            print("Real neutral")
+        compound = snt['compound']
+        if compound > 0.5:
+            predoutput = "Positive"
+            print("Predicted positive")
+        elif compound < -0.5:
+            predoutput = "Negative"
+            print("Predicted negative")
+        else:
+            predoutput = "Neutral"
+            print("Predicted neutral")
+        print()
+        if predoutput == realoutput:
+            s+=1
+        i+=1
+    else:
+        i+=1
+print(s, "predicted correctly out of", i-1)
+accuracy = (s/(i-1))*100
+print("Accuracy: ", accuracy)
+file.close()
