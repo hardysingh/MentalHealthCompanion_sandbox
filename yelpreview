@@ -2,6 +2,8 @@ import csv
 file = open("yelpdatanewer.csv")
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyser = SentimentIntensityAnalyzer()
+new_word = {'achhi':2.0}
+analyser.lexicon.update(new_word)
 reader = csv.reader(file)
 i = 0
 s = 0
