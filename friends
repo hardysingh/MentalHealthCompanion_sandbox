@@ -1,0 +1,26 @@
+import csv
+file = open("friends.csv")
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+analyser = SentimentIntensityAnalyzer()
+names = []
+i = 0
+reader = csv.reader(file)
+'''for row in reader:
+    if i!=0:
+        name = row[0]
+        if name not in names:
+            names.append(name)
+    else:
+        i=1'''
+for row in reader:
+    snt = analyser.polarity_scores(row[2])
+    #print("{:-<40} {}".format(row[0], str(snt)))
+    compound = snt['compound']
+    if compound > 0.5:
+        sentiment = 'positive'
+    elif compound < -0.5:
+        sentiment = 'negative'
+    else:
+        sentiment = 'neutral'
+    print(row[0], 'has a', sentiment, 'opinion of', row[1])
+file.close()
